@@ -1,0 +1,10 @@
+# ===== Зависимости проекта LevelUp Bot (MVP) =====
+aiogram==3.30.0
+SQLAlchemy==2.0.51
+# Обязателен для asyncio-режима SQLAlchemy (на чистой установке не ставится сам)
+greenlet==3.2.4
+asyncpg==0.31.0
+alembic==1.19.0
+pydantic-settings==2.14.2
+# Обязательно: без него ZoneInfo("Europe/Minsk") падает на Linux
+tzdata
