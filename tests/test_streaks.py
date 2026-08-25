@@ -118,11 +118,11 @@ async def test_reactions_pools_are_stable():
     """Пулы реакций зафиксированы в ТЗ (раздел 9) — не меняются."""
     from app.services import reactions
 
-    assert len(reactions.POSITIVE_REACTIONS) == 10
-    assert len(reactions.MOTIVATIONAL_REACTIONS) == 10
-    assert reactions.POSITIVE_REACTIONS[0] == "Вот это точно! Так держать"
+    assert len(reactions.POSITIVE_REACTIONS) == 4
+    assert len(reactions.MOTIVATIONAL_REACTIONS) == 4
+    assert reactions.POSITIVE_REACTIONS[0] == "Точно в цель! 🎯"
     assert reactions.MOTIVATIONAL_REACTIONS[0] == (
-        "Бывает. Это не ошибка, это точка роста"
+        "Не сходится, глянь ещё раз 👀"
     )
 
 
@@ -137,13 +137,13 @@ async def test_reaction_never_repeats(session, monkeypatch):
         return seq[-1]  # гарантированно последняя позиция — не last_id
 
     monkeypatch.setattr(reactions.random, "choice", fake_choice)
-    _, text = reactions.positive_reaction(last_id=10)
-    # id 10 исключён → последний кандидат — позиция 9 списка (инд. 8)
-    assert text == reactions.POSITIVE_REACTIONS[8]
-    _, text = reactions.motivational_reaction(last_id=9)
-    # id 9 (инд. 8) исключён → последний кандидат — позиция 10 (инд. 9)
-    assert text == reactions.MOTIVATIONAL_REACTIONS[9]
+    _, text = reactions.positive_reaction(last_id=4)
+    # id 4 исключён → последний кандидат — позиция 3 списка (инд. 2)
+    assert text == reactions.POSITIVE_REACTIONS[2]
+    _, text = reactions.motivational_reaction(last_id=3)
+    # id 3 (инд. 2) исключён → последний кандидат — позиция 4 (инд. 3)
+    assert text == reactions.MOTIVATIONAL_REACTIONS[3]
 
-    # без last_id — любой (кандидатов 10)
+    # без last_id — любой (кандидатов 4)
     _, text = reactions.positive_reaction(last_id=None)
     assert text in reactions.POSITIVE_REACTIONS
